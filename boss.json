@@ -1,0 +1,11 @@
+{
+	"name": "MigrationProject",
+	"description": "migration for Firebird Database",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./src",
+	"projects": [],
+	"dependencies": {
+		"https://github.com/ahausladen/jsondataobjects": ">0.0.0"
+	}
+}

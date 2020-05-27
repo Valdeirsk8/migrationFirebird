@@ -1,0 +1,14 @@
+{
+	"hash": "d41d8cd98f00b204e9800998ecf8427e",
+	"updated": "2020-05-24T17:53:11.8725908-03:00",
+	"installedModules": {
+		"https://github.com/ahausladen/jsondataobjects": {
+			"name": "jsondataobjects",
+			"version": "master",
+			"hash": "be0077f9c3ce8a04365c34ddf81459e9",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		}
+	}
+}
