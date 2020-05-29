@@ -29,6 +29,8 @@ begin
   var nameDir :String := dir.Replace(TPath.GetDirectoryName(dir),'').replace(TPath.DirectorySeparatorChar,'');
   var fileName := Tpath.Combine(dir, nameDir + TMigrationFileExt.ConfigMigration);
 
+
+  { TODO : Não olhar para o Nome do Arquivo apenas para o Extensão }
   if FileExists(filename) then
     raise EFilerError.CreateFmt('Já existe um arquivo %s neste diretório',[TMigrationFileExt.ConfigMigration]);
 

@@ -24,9 +24,12 @@ uses common.Types;
 function TMigration.Execute: TMigration;
 Var
   ArrayOfFiles:TArray<String>;
+  S: String;
 begin
   ArrayOfFiles := TDirectory.GetFiles(GetCurrentDir, TFindFileExpression.Migration);
-
+  for S in ArrayOfFIles do begin
+    writeln(s);
+  end;
 
   Result := Self;
 end;

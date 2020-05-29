@@ -30,8 +30,8 @@ begin
   if length(arrayFiles) = 0 then raise EFilerError.CreateFMT(msgFileNotFoundByExt, [TMigrationFileExt.ConfigMigration]);
 
   var Data : TDateTime := Now;
-  var aFileNameVersion :String := FormatDateTime(TMigrationFormat.Migration, Data) + TMigrationFormat.Migration;
-  var aFileNameRevert  :String := FormatDateTime(TMigrationFormat.Revert, Data)    + TMigrationFormat.Revert;
+  var aFileNameVersion :String := FormatDateTime(TMigrationFormat.Migration, Data) + TMigrationFileExt.Migration;
+  var aFileNameRevert  :String := FormatDateTime(TMigrationFormat.Revert, Data)    + TMigrationFileExt.Migration;
 
   TinitMigration.New().SaveToFile(Tpath.Combine(GetCurrentDir, aFileNameVersion)).Free;
   TinitMigration.New().SaveToFile(Tpath.Combine(GetCurrentDir, aFileNameRevert )).Free;
