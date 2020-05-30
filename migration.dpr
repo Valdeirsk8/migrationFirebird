@@ -15,7 +15,11 @@ uses
   model.init in 'src\migration.core\model.init.pas',
   Model.initMigration in 'src\migration.core\Model.initMigration.pas',
   common.Types in 'src\_common\common.Types.pas',
-  Core.Migration in 'src\migration.core\Core.Migration.pas';
+  Core.Migration in 'src\migration.core\Core.Migration.pas',
+  Conn.Connection.DB.Firebird in 'src\Connetion\Conn.Connection.DB.Firebird.pas',
+  Conn.Connection in 'src\Connetion\Conn.Connection.pas',
+  Conn.Connection.Singleton.Firebird in 'src\Connetion\Conn.Connection.Singleton.Firebird.pas',
+  Conn.Interfaces in 'src\Connetion\Conn.Interfaces.pas';
 
 begin
   ReportMemoryLeaksOnShutdown := True;

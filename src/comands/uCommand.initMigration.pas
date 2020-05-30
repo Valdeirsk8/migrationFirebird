@@ -24,14 +24,18 @@ implementation
 uses Model.initMigration, common.Types;
 
 function TCommandInitMigration.Execute: Boolean;
+var
+  Data : TDateTime;
+  aFileNameVersion :String;
+  aFileNameRevert  :String;
 begin
 
-  var arrayFiles :TArray<String> := TDirectory.GetFiles(GetCurrentDir, TFindFileExpression.ConfigMigration);
-  if length(arrayFiles) = 0 then raise EFilerError.CreateFMT(msgFileNotFoundByExt, [TMigrationFileExt.ConfigMigration]);
+  if TDirectory.GetFiles(GetCurrentDir, TFindFileExpression.ConfigMigration)[0].IsEmpty then
+   raise EFilerError.CreateFMT(msgFileNotFoundByExt, [TMigrationFileExt.ConfigMigration]);
 
-  var Data : TDateTime := Now;
-  var aFileNameVersion :String := FormatDateTime(TMigrationFormat.Migration, Data) + TMigrationFileExt.Migration;
-  var aFileNameRevert  :String := FormatDateTime(TMigrationFormat.Revert, Data)    + TMigrationFileExt.Migration;
+  Data             := Now;
+  aFileNameVersion := FormatDateTime(TMigrationFormat.Migration, Data) + TMigrationFileExt.Migration;
+  aFileNameRevert  := FormatDateTime(TMigrationFormat.Revert, Data)    + TMigrationFileExt.Migration;
 
   TinitMigration.New().SaveToFile(Tpath.Combine(GetCurrentDir, aFileNameVersion)).Free;
   TinitMigration.New().SaveToFile(Tpath.Combine(GetCurrentDir, aFileNameRevert )).Free;

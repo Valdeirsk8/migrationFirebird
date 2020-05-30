@@ -67,3 +67,7 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+#Pasta com os DCUs
+_dcu/
+#pasta com o exe
+_bin/
