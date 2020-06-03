@@ -30,19 +30,22 @@ implementation
 
 procedure TConnConnectionFirebird.ConfigConnection;
 begin
-  Self.GetConnection.DriverName                 := 'FB';
+  Self.GetConnection.DriverName                    := 'FB';
 
-  Self.GetConnection.Params.Values['Database']  := FDefConnection.DataBase;
-  Self.GetConnection.Params.Values['Server']    := FDefConnection.Server;
-  Self.GetConnection.Params.Values['Port']      := FDefConnection.Port.ToString;
-  Self.GetConnection.Params.Values['User_Name'] := FDefConnection.UserName;
-  Self.GetConnection.Params.Values['Password']  := FDefConnection.PassWord;
-  Self.GetConnection.Params.Values['Charset']   := FDefConnection.CharSet;
+  Self.GetConnection.Params.Values['Database']     := FDefConnection.DataBase;
+  Self.GetConnection.Params.Values['Server']       := FDefConnection.Server;
+  Self.GetConnection.Params.Values['Port']         := FDefConnection.Port.ToString;
+  Self.GetConnection.Params.Values['User_Name']    := FDefConnection.UserName;
+  Self.GetConnection.Params.Values['Password']     := FDefConnection.PassWord;
+  Self.GetConnection.Params.Values['Charset']      := FDefConnection.CharSet;
 
-  Self.GetConnection.Params.Values['Protocol']  := 'TCPIP';
-  Self.GetConnection.Params.Values['OpenMode']  := 'OpenOrCreate';
-  Self.GetConnection.LoginPrompt                := False;
-  Self.GetConnection.TxOptions.AutoCommit       := True;
+  Self.GetConnection.Params.Values['GUIDEndian']   := 'Big';
+  Self.GetConnection.Params.Values['PageSize']     :='16384';
+  Self.GetConnection.Params.Values['DropDatabase'] :='No';
+  Self.GetConnection.Params.Values['Protocol']     := 'TCPIP';
+  Self.GetConnection.Params.Values['OpenMode']     := 'OpenOrCreate';
+  Self.GetConnection.LoginPrompt                   := False;
+  Self.GetConnection.TxOptions.AutoCommit          := True;
 end;
 
 procedure TConnConnectionFirebird.ConfigDriverLink;
@@ -68,7 +71,6 @@ constructor TConnConnectionFirebird.Create;
 begin
   FDefConnection := TInit.New().LoadFromFile;
   inherited Create();
-
 end;
 
 destructor TConnConnectionFirebird.Destroy;

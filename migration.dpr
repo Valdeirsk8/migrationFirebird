@@ -21,16 +21,17 @@ uses
   Conn.Connection.Singleton.Firebird in 'src\Connetion\Conn.Connection.Singleton.Firebird.pas',
   Conn.Interfaces in 'src\Connetion\Conn.Interfaces.pas';
 
+Var
+  sCommand : String;
 begin
   ReportMemoryLeaksOnShutdown := True;
 
   try
-    Var sCommand : String := TCommands.GetInstance().ParseComandLine();
+    sCommand := TCommands.GetInstance().ParseComandLine();
     TCommands.GetInstance().ExecuteCommandLine(sCommand.Trim);
 
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);
   end;
-
 end.

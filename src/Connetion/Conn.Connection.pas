@@ -126,10 +126,19 @@ end;
 
 function TConnConnection.GetQuery(aSql: String): TFDQuery;
 begin
-  Result          := GetQuery();
-  Result.SQL.Text := aSql;
+  try
+    Result          := GetQuery();
+    Result.SQL.Text := aSql;
 
-  if Result.ParamCount = 0 then Result.Open();
+    if Result.ParamCount = 0 then Result.Open();
+
+  except
+    on E: Exception do begin
+      if assigned(Result) then FreeAndNil(Result);
+      raise
+    end;
+
+  end;
 end;
 
 function TConnConnection.RollbackTransaction: Boolean;
