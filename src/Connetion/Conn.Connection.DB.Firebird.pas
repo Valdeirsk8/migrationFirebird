@@ -46,6 +46,7 @@ begin
   Self.GetConnection.Params.Values['OpenMode']     := 'OpenOrCreate';
   Self.GetConnection.LoginPrompt                   := False;
   Self.GetConnection.TxOptions.AutoCommit          := True;
+  Self.GetConnection.FetchOptions.AutoClose        := False;
 end;
 
 procedure TConnConnectionFirebird.ConfigDriverLink;

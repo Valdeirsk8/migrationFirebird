@@ -1,0 +1,8 @@
+{
+	"database": "C:\\Plenus\\migrationFirebird\\demo\\BancoDemo\\banco.fdb",
+	"server": "127.0.0.1",
+	"port": 3051,
+	"username": "SYSDBA",
+	"password": "masterkey",
+	"charset": "win125"
+}

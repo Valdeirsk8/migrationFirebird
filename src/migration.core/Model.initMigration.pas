@@ -2,7 +2,7 @@ unit Model.initMigration;
 
 interface
 uses
-  System.Classes, System.SysUtils,
+  System.Classes, System.SysUtils, System.StrUtils,
 
   JsonDataObjects;
 
@@ -15,7 +15,6 @@ type
   public
     property CommandSql: string read FCommandSql write FCommandSql;
     function SaveToFile(aFileName:String):TinitMigration;
-    function LoadFromFile(aFileName:String):TinitMigration;
     class function New():TInitMigration;
 
   end;
@@ -23,17 +22,6 @@ type
 implementation
 
 { TinitMigration }
-
-function TinitMigration.LoadFromFile(aFileName: String): TinitMigration;
-begin
-  Result := Self;
-  var aJson : TjsonObject := TjsonObject.Create;
-  try
-    self.CommandSql :=  aJson.Values['commandSql'].Value;
-  finally
-    aJson.Free
-  end;
-end;
 
 class function TinitMigration.New: TInitMigration;
 begin
@@ -43,14 +31,13 @@ end;
 function TinitMigration.SaveToFile(aFileName: String): TinitMigration;
 begin
   Result := Self;
-  var aJson:TJsonObject := TjsonObject.Create();
+  var aFile : TStringList := TStringList.Create();
   try
-    aJson.S['commandSql'] := EmptyStr;
-
-    ajson.SaveToFile(aFileName, False);
+    aFile.Add('--Type your SQL command here.');
+    aFile.SaveToFile(aFileName);
 
   finally
-    aJson.Free;
+    aFile.Free;
   end;
 
 end;
