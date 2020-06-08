@@ -47,7 +47,8 @@ type
     function StartTransaction: Boolean;
     function CommitTransaction: Boolean;
     function RollbackTransaction: Boolean;
-    function ExecuteCommand(aSql: String): Boolean;
+    function ExecuteCommand(aSql: String): Boolean; overload;
+    function ExecuteCommand(aSql: String; const aArgs: array of const): Boolean; overload;
 
     function GetGenerator(aGeneratorName: String; aStep:Integer = 1): Integer;
   end;
@@ -82,25 +83,40 @@ begin
   inherited;
 end;
 
+function TConnConnection.ExecuteCommand(aSql: String; Const aArgs: array of const): Boolean;
+begin
+  Result := ExecuteCommand(Format(aSql,aArgs));
+end;
+
 function TConnConnection.ExecuteCommand(aSql: String): Boolean;
 Var
- Q:TFDQuery;
+  Q : TFDQuery;
+  inAPreviosTransaction : Boolean;
 begin
   Result := False;
   Q      := Self.GetQuery();
+  inAPreviosTransaction := Self.GetConnection.InTransaction;
+
   try
     try
       Q.SQL.Clear;
       Q.SQL.Append(aSql);
 
-      Self.StartTransaction;
+      if not inAPreviosTransaction then
+        Self.StartTransaction;
+
       Q.ExecSQL;
-      Self.CommitTransaction;
+
+      if not inAPreviosTransaction then
+        Self.CommitTransaction;
+
       Result := True;
     except
       on E: Exception do begin
-        Self.RollbackTransaction;
-        raise Exception.Create('[Error][ExecutaComandos] erro ao executar.' + #13 + E.Message);
+        if not inAPreviosTransaction then
+          Self.RollbackTransaction;
+
+        raise Exception.Create('[Error][ExecuteCommand] erro ao executar.' + #13 + E.Message);
       end;
     end;
   finally

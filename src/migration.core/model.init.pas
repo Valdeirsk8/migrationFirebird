@@ -44,8 +44,11 @@ begin
   Result := Self;
   aJson := TJsonObject.Create();
   try
-    if aFileName.isEmpty then
-      aFileName := TDirectory.GetFiles(GetCurrentDir, TFindFileExpression.ConfigMigration)[0];
+    if aFileName.isEmpty then begin
+      var ArrayOfFiles : TArray<String> := TDirectory.GetFiles(GetCurrentDir, TFindFileExpression.ConfigMigration);
+      if Length(ArrayOfFiles) > 0 then aFileName := ArrayOfFiles[0];
+
+    end;
 
     if aFileName.isEmpty then
        raise EFilerError.CreateFMT('[TInit][LoadFromFile] ' + msgFileNotFoundByExt, [TMigrationFileExt.ConfigMigration]);

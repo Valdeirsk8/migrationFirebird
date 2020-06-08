@@ -1,3 +1,5 @@
+--Type your SQL command here.
+
 CREATE TABLE TESTE(
 	ID INTEGER NOT NULL,
 	CAMPO_TESTE VARCHAR(30)

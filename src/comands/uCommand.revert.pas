@@ -18,10 +18,22 @@ implementation
 
 { TCommandRevert }
 
+uses Core.Revert;
+
 function TCommandRevert.Execute: Boolean;
 begin
-  writeln('comando revert executado');
-  { TODO : need to be implemented }
+  Var Revert := TRevert.New();
+
+  try
+    Revert.execute();
+
+  finally
+    FreeAndNil(Revert);
+  end;
+
+  result := true;
+
+
   result := true;
 end;
 

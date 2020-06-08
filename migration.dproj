@@ -171,6 +171,8 @@
         <DCCReference Include="src\Connetion\Conn.Connection.pas"/>
         <DCCReference Include="src\Connetion\Conn.Connection.Singleton.Firebird.pas"/>
         <DCCReference Include="src\Connetion\Conn.Interfaces.pas"/>
+        <DCCReference Include="src\migration.core\Core.Revert.pas"/>
+        <DCCReference Include="src\migration.core\Core.ScriptExecutor.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -212,7 +214,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win32\Debug\migration.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="_bin\migration.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>migration.exe</RemoteName>
                         <Overwrite>true</Overwrite>

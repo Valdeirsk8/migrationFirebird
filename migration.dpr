@@ -19,7 +19,9 @@ uses
   Conn.Connection.DB.Firebird in 'src\Connetion\Conn.Connection.DB.Firebird.pas',
   Conn.Connection in 'src\Connetion\Conn.Connection.pas',
   Conn.Connection.Singleton.Firebird in 'src\Connetion\Conn.Connection.Singleton.Firebird.pas',
-  Conn.Interfaces in 'src\Connetion\Conn.Interfaces.pas';
+  Conn.Interfaces in 'src\Connetion\Conn.Interfaces.pas',
+  Core.Revert in 'src\migration.core\Core.Revert.pas',
+  Core.ScriptExecutor in 'src\migration.core\Core.ScriptExecutor.pas';
 
 Var
   sCommand : String;

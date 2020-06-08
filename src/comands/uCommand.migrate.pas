@@ -21,10 +21,14 @@ uses Core.Migration;
 
 function TCommandMigrate.Execute: Boolean;
 begin
-  TMigration
-  .New
-    .execute()
-  .Free;
+  Var Migration := TMigration.New();
+
+  try
+    Migration.execute();
+
+  finally
+    FreeAndNil(Migration);
+  end;
 
   result := true;
 end;

@@ -65,12 +65,13 @@ begin
     FDWaitCursor.Provider := 'Forms';
   {$ENDIF}
 
-
 end;
 
 constructor TConnConnectionFirebird.Create;
 begin
-  FDefConnection := TInit.New().LoadFromFile;
+  FDefConnection := TInit.New();
+  FDefConnection.LoadFromFile;
+
   inherited Create();
 end;
 

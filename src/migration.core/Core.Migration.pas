@@ -6,9 +6,11 @@ uses
   System.Classes, System.SysUtils, System.Generics.Collections, System.IoUtils,
 
   FireDAC.Comp.Client, FireDAC.Comp.DataSet,
-  FireDAC.Comp.ScriptCommands, FireDAC.Stan.Util, FireDAC.Comp.Script,
+
+  Core.ScriptExecutor,
 
   Conn.Connection.DB.Firebird, Conn.connection.Singleton.Firebird;
+
 
 type
 
@@ -17,16 +19,16 @@ type
     const HistoryTableName = 'HISTORY_MIGRATION';
   private
     FConexao : TConnConnectionFirebird;
-    ScriptExecutor : TFDScript;
+    ScriptExecutor : TScriptExecutor;
     function GetListNoExecutedFiles(): TArray<String>;
     procedure InsertFilesOnDataBase;
     procedure CreateTheHistoryTable;
     procedure UpdateHistotyTable(Const ArrayOfFiles : TArray<String>);
     function HistoryTableExists: Boolean;
     procedure ExecuteScript(aFileName: String);
-    procedure ConfigScriptExecutor;
+    procedure UpdateScriptExecuted(aFileName:String; aDuration:TDateTime);
   public
-    constructor Create();
+    Constructor Create();
     Destructor Destroy(); override;
 
     function Execute():TMigration;
@@ -43,8 +45,7 @@ constructor TMigration.Create;
 begin
   inherited Create();
   Self.FConexao                  := TConexaoSingleton.GetInstance();
-  Self.ScriptExecutor            := TFDSCript.Create(nil);
-  Self.ConfigScriptExecutor();
+  Self.ScriptExecutor            := TScriptExecutor.New();
 end;
 
 destructor TMigration.Destroy;
@@ -53,16 +54,41 @@ begin
   inherited;
 end;
 
+procedure TMigration.UpdateScriptExecuted(aFileName:String; aDuration:TDateTime);
+Const
+  _Sql :String = ' UPDATE HISTORY_MIGRATION SET '+
+                 ' EXECUTED = TRUE, '+
+                 ' EXECUTION_TIME = :EXECUTION_TIME, '+
+                 ' EXECUTION_DATE = :EXECUTION_DATE, '+
+                 ' EXECUTION_DURATION = :EXECUTION_DURATION '+
+                 ' WHERE FILE_NAME = :FILE_NAME';
+begin
+  var Q := Self.FConexao.GetQuery(_Sql);
+  try
+    Q.ParamByName('EXECUTION_TIME').AsTime     := Now;
+    Q.ParamByName('EXECUTION_DATE').AsDate     := Now;
+    Q.ParamByName('EXECUTION_DURATION').AsTime := aDuration;
+    Q.ParamByName('FILE_NAME').AsString        := ExtractFileName(aFileName);
+
+    Q.ExecSQL;
+
+    writeLn('Migration executed ',Q.ParamByName('FILE_NAME').AsString);
+  finally
+    FreeAndNil(Q);
+  end;
+end;
+
 procedure TMigration.ExecuteScript(aFileName:String);
 begin
-
   Self.FConexao.StartTransaction();
   try
-    ScriptExecutor.SQLScripts.Clear();
-    ScriptExecutor.SQLScriptFileName := aFileName;
-
-    if ScriptExecutor.ExecuteAll()
-    then Self.FConexao.CommitTransaction()
+    ScriptExecutor.Script.SQLScripts.Clear();
+    ScriptExecutor.Script.SQLScriptFileName := aFileName;
+    var Duration := now;
+    if ScriptExecutor.Script.ExecuteAll() then begin
+      UpdateScriptExecuted(aFileName, Now - Duration);
+      Self.FConexao.CommitTransaction();
+    end
     else self.FConexao.RollbackTransaction();
   except
     on E:Exception do begin
@@ -79,10 +105,14 @@ begin
   Result := Self;
   Var ArrayOfFiles :TArray<String> := GetListNoExecutedFiles();
 
+  if Length(ArrayOfFiles) = 0 then writeLn('up to date!');
+  
   for var sFileName : String in ArrayOfFiles do begin
     Var Dir := TPath.Combine(GetCurrentDir, sFileName);
     Self.ExecuteScript(Dir);
   end;
+
+
 end;
 
 class function TMigration.New: TMigration;
@@ -105,6 +135,7 @@ begin
 
       Query.Next();
     end;
+
   finally
     FreeAndNil(Query);
   end;
@@ -183,23 +214,6 @@ begin
   finally
     FreeAndNil(QueryFiles);
   end;
-
-end;
-
-procedure TMigration.ConfigScriptExecutor();
-begin
-  Self.ScriptExecutor.Connection := Self.FConexao.GetConnection;
-  Self.ScriptExecutor.ScriptOptions.CommitEachNCommands := 1;
-  Self.ScriptExecutor.ScriptOptions.EchoCommandTrim := 0;
-  Self.ScriptExecutor.ScriptOptions.MaxStringWidth := 0;
-  Self.ScriptExecutor.ScriptOptions.BreakOnError := True;
-  Self.ScriptExecutor.ScriptOptions.MacroExpand := False;
-  Self.ScriptExecutor.ScriptOptions.DriverID := Self.FConexao.GetConnection.Params.DriverID;
-  Self.ScriptExecutor.ScriptOptions.SQLDialect := 3;
-  Self.ScriptExecutor.ScriptOptions.RaisePLSQLErrors := True;
-  Self.ScriptExecutor.FormatOptions.StrsEmpty2Null := True;
-  //Self.ScriptExecutor.OnConsolePut := ScriptConsolePut;
-  //Self.ScriptExecutor.OnError      := ScriptError;
 
 end;
 
