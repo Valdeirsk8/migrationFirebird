@@ -71,3 +71,6 @@ modules/
 _dcu/
 #pasta com o exe
 _bin/
+
+# Arquivo de banco de dados Firebird
+*.fdb
