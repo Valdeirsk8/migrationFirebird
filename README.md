@@ -8,7 +8,11 @@
     <img alt="" src="https://img.shields.io/badge/version-0.0.1-green.svg?style=flat-square">
   </a>
 </p>
-
+<p align="center">
+  <a href="https://github.com/Valdeirsk8/migrationFirebird/blob/master/images/logoAndText.png">
+    <img alt="Firebird Migration" height="200" src="https://github.com/Valdeirsk8/migrationFirebird/blob/master/images/logoAndText.png">
+  </a>  
+</p><br>
 ### Getting started
 
 Installation:
