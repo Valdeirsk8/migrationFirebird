@@ -56,12 +56,7 @@ end;
 
 procedure TRevert.UpdateScriptExecuted(aFileName:String);
 Const
-  _Sql :String = ' UPDATE HISTORY_MIGRATION SET '+
-                 ' EXECUTED = False, '+
-                 ' EXECUTION_TIME = Null, '+
-                 ' EXECUTION_DATE = Null, '+
-                 ' EXECUTION_DURATION = Null '+
-                 ' WHERE FILE_NAME = :FILE_NAME';
+  _Sql :String = ' DELETE FROM HISTORY_MIGRATION WHERE FILE_NAME = :FILE_NAME';
 begin
   var Q := Self.FConexao.GetQuery(_Sql);
   try
