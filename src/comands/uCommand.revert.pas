@@ -7,7 +7,7 @@ uses
 
 Type
   TCommandRevert = class(TInterfacedObject, ICommand)
-    function Execute():Boolean;
+    function Execute(aArgs:TArgs):Boolean;
     function getCommandName():String;
     function getDescription():String;
   end;
@@ -20,9 +20,9 @@ implementation
 
 uses Core.Revert;
 
-function TCommandRevert.Execute: Boolean;
+function TCommandRevert.Execute(aArgs:TArgs): Boolean;
 begin
-  Var Revert := TRevert.New();
+  Var Revert := TRevert.New(aArgs);
 
   try
     Revert.execute();

@@ -29,8 +29,8 @@ begin
   ReportMemoryLeaksOnShutdown := True;
 
   try
-    sCommand := TCommands.GetInstance().ParseComandLine();
-    TCommands.GetInstance().ExecuteCommandLine(sCommand.Trim);
+    TCommands.GetInstance().ParseComandLine();
+    TCommands.GetInstance().ExecuteCommandLine();
 
   except
     on E: Exception do

@@ -10,7 +10,7 @@ uses
 
 Type
   TCommandHelp = class(TInterfacedObject, ICommand)
-    function Execute():Boolean;
+    function Execute(aArgs : TArgs):Boolean;
     function getCommandName():String;
     function getDescription():String;
   end;
@@ -20,7 +20,7 @@ implementation
 
 { TCommandHelp }
 
-function TCommandHelp.Execute: Boolean;
+function TCommandHelp.Execute(aArgs : TArgs): Boolean;
 
 begin
   Const separador :String = ':';

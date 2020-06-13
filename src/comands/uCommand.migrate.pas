@@ -8,7 +8,7 @@ uses
 Type
 
   TCommandMigrate = class(TInterfacedObject, ICommand)
-    function Execute():Boolean;
+    function Execute(aArgs:TArgs):Boolean;
     function getCommandName():String;
     function getDescription():String;
   end;
@@ -19,7 +19,7 @@ implementation
 
 uses Core.Migration;
 
-function TCommandMigrate.Execute: Boolean;
+function TCommandMigrate.Execute(aArgs:TArgs): Boolean;
 begin
   Var Migration := TMigration.New();
 

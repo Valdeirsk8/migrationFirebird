@@ -10,7 +10,7 @@ uses
 
 Type
   TCommandInitMigration = class(TInterfacedObject, ICommand)
-    function Execute():Boolean;
+    function Execute(aArgs:TArgs):Boolean;
     function getCommandName():String;
     function getDescription():String;
   end;
@@ -23,7 +23,7 @@ implementation
 
 uses Model.initMigration, common.Types;
 
-function TCommandInitMigration.Execute: Boolean;
+function TCommandInitMigration.Execute(aArgs:TArgs): Boolean;
 var
   Data : TDateTime;
   aFileNameVersion :String;

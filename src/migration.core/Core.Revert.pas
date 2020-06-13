@@ -7,7 +7,7 @@ uses
 
   FireDAC.Comp.Client, FireDAC.Comp.DataSet,
 
-  Core.ScriptExecutor,
+  uCommands, Core.ScriptExecutor,
 
   Conn.Connection.DB.Firebird, Conn.connection.Singleton.Firebird;
 
@@ -17,6 +17,7 @@ type
   private
     FConexao : TConnConnectionFirebird;
     ScriptExecutor : TScriptExecutor;
+    FArgs:TArgs;
     procedure ExecuteScript(aFileName: String);
     function GetListExecutedFiles: TArray<String>;
     function ReadIntValue(aMsg: String): Integer;
@@ -27,7 +28,7 @@ type
     Destructor Destroy(); override;
 
     function Execute(): TRevert;
-    class function New():TRevert;
+    class function New(aArgs:TArgs):TRevert;
   end;
 
 
@@ -49,9 +50,10 @@ begin
   inherited;
 end;
 
-class function TRevert.New: TRevert;
+class function TRevert.New(aArgs:TArgs): TRevert;
 begin
-  Result := TRevert.Create();
+  Result       := TRevert.Create();
+  Result.FArgs := aArgs;
 end;
 
 procedure TRevert.UpdateScriptExecuted(aFileName:String);
@@ -110,7 +112,17 @@ function TRevert.GetListExecutedFiles():TArray<String>;
 const
   _Sql:String = 'SELECT A.FILE_NAME FROM HISTORY_MIGRATION A WHERE A.EXECUTED AND ID_HISTORY > %d';
 begin
-  Var ID_History := ReadIntValue('To it version would you like to Revert? ');
+  Var ID_History:Integer := -1;
+
+  if Self.FArgs.ContainsKey('all') then
+    ID_History := 0
+
+  else if Self.FArgs.ContainsKey('to') then
+    ID_History := Self.FArgs.Items['to'].ToInteger
+
+  else
+    raise Exception.Create('Parameter -to or -all is required');
+
 
   var Query :TFDQuery := Self.FConexao.GetQuery(_Sql, [ID_History]);
   try

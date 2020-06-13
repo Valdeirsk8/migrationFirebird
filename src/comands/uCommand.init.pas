@@ -10,7 +10,7 @@ uses
 
 Type
   TCommandInit = class(TInterfacedObject, ICommand)
-    function Execute():Boolean;
+    function Execute(aArgs:TArgs):Boolean;
     function getCommandName():String;
     function getDescription():String;
   end;
@@ -23,7 +23,7 @@ implementation
 
 uses model.init, common.Types;
 
-function TCommandInit.Execute: Boolean;
+function TCommandInit.Execute(aArgs:TArgs): Boolean;
 begin
   var dir :String := GetCurrentDir();
   var nameDir :String := dir.Replace(TPath.GetDirectoryName(dir),'').replace(TPath.DirectorySeparatorChar,'');
