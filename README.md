@@ -12,7 +12,8 @@
   <a href="https://github.com/Valdeirsk8/migrationFirebird/blob/master/images/logoAndText.png">
     <img alt="Firebird Migration" height="200" src="https://github.com/Valdeirsk8/migrationFirebird/blob/master/images/logoAndText.png">
   </a>  
-</p><br>
+</p>
+
 ### Getting started
 
 Installation:
@@ -46,7 +47,7 @@ This command upgrade your database configured in your migration project
 migration migrate
 ```
 
-### > revert -to <number> | -all
+### > revert -to \<number\> | -all
 
 This command revert your database to a point of time that you define
 
@@ -55,7 +56,7 @@ This command revert your database to a point of time that you define
  migration revert -all
 ```
 
-#### <number> that's a ID that you find on History_Migration table inside your database
+###### \<number\> that's an ID that you find on History_Migration table inside your database
 
 ### > Help
 
