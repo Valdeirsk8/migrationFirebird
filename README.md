@@ -46,13 +46,16 @@ This command upgrade your database configured in your migration project
 migration migrate
 ```
 
-### > revert
+### > revert -to <number> | -all
 
-This command revert your database in a point of time that you define
+This command revert your database to a point of time that you define
 
 ```
- migration revert
+ migration revert -to 10
+ migration revert -all
 ```
+
+#### <number> that's a ID that you find on History_Migration table inside your database
 
 ### > Help
 
