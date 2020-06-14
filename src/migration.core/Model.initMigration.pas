@@ -12,10 +12,11 @@ type
   private
     FCommandSql: string;
 
+
   public
     property CommandSql: string read FCommandSql write FCommandSql;
     function SaveToFile(aFileName:String):TinitMigration;
-    class function New():TInitMigration;
+    class function New(): TInitMigration;
 
   end;
 
@@ -23,7 +24,7 @@ implementation
 
 { TinitMigration }
 
-class function TinitMigration.New: TInitMigration;
+class function TinitMigration.New(): TInitMigration;
 begin
   Result := TInitMigration.Create();
 end;

@@ -109,11 +109,19 @@ begin
     Var Math:TMatch := m.Item[i];
 
     if math.Success then begin
-      var Arg := math.Value.Split([' ']);
+      var Arg := math.Value.Trim.Split([' ']);
+      if Length(Arg) >= 2 then begin
+        S := emptyStr;
+        for var j := 1 to Length(arg)-1 do begin
+          S := S  + arg[j].Trim + ' '
+        end;
 
-      if Length(Arg) >= 2
-      then Self.FArgs.Add(Arg[0], Arg[1])
+        Self.FArgs.Add(Arg[0], S.Trim);
+      end
       else Self.FArgs.Add(Arg[0], '');
+
+
+
 
       Self.FCommand := Self.FCommand.Replace(math.Value, '');
     end;

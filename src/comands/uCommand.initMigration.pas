@@ -28,14 +28,23 @@ var
   Data : TDateTime;
   aFileNameVersion :String;
   aFileNameRevert  :String;
+  aDescription     :String;
 begin
+  aDescription := EmptyStr;
+
+  if aArgs.ContainsKey('d') then
+    aDescription := ' - ' + aArgs.Items['d'].Trim;
+
+  if aArgs.ContainsKey('description') then
+    aDescription := ' - ' + aArgs.Items['description'].Trim;
+
 
   if TDirectory.GetFiles(GetCurrentDir, TFindFileExpression.ConfigMigration)[0].IsEmpty then
    raise EFilerError.CreateFMT(msgFileNotFoundByExt, [TMigrationFileExt.ConfigMigration]);
 
   Data             := Now;
-  aFileNameVersion := FormatDateTime(TMigrationFormat.Migration, Data) + TMigrationFileExt.Migration;
-  aFileNameRevert  := FormatDateTime(TMigrationFormat.Revert, Data)    + TMigrationFileExt.Migration;
+  aFileNameVersion := FormatDateTime(TMigrationFormat.Migration, Data)+ aDescription + TMigrationFileExt.Migration;
+  aFileNameRevert  := FormatDateTime(TMigrationFormat.Revert, Data)  + aDescription  + TMigrationFileExt.Migration;
 
   TinitMigration.New().SaveToFile(Tpath.Combine(GetCurrentDir, aFileNameVersion)).Free;
   TinitMigration.New().SaveToFile(Tpath.Combine(GetCurrentDir, aFileNameRevert )).Free;

@@ -21,7 +21,7 @@ uses Core.Migration;
 
 function TCommandMigrate.Execute(aArgs:TArgs): Boolean;
 begin
-  Var Migration := TMigration.New();
+  Var Migration := TMigration.New(aArgs);
 
   try
     Migration.execute();

@@ -7,6 +7,8 @@ uses
 
   FireDAC.Comp.Client, FireDAC.Comp.DataSet,
 
+  uCommands,
+
   Core.ScriptExecutor,
 
   Conn.Connection.DB.Firebird, Conn.connection.Singleton.Firebird;
@@ -20,6 +22,8 @@ type
   private
     FConexao : TConnConnectionFirebird;
     ScriptExecutor : TScriptExecutor;
+    FArgs:TArgs;
+
     function GetListNoExecutedFiles(): TArray<String>;
     procedure InsertFilesOnDataBase;
     procedure CreateTheHistoryTable;
@@ -32,7 +36,7 @@ type
     Destructor Destroy(); override;
 
     function Execute():TMigration;
-    class function New():TMigration;
+    class function New(aArgs:TArgs):TMigration;
   end;
 
 implementation
@@ -100,13 +104,14 @@ begin
 
 end;
 
-function TMigration.Execute: TMigration;
+function TMigration.Execute(): TMigration;
 begin
   Result := Self;
+
   Var ArrayOfFiles :TArray<String> := GetListNoExecutedFiles();
 
   if Length(ArrayOfFiles) = 0 then writeLn('up to date!');
-  
+
   for var sFileName : String in ArrayOfFiles do begin
     Var Dir := TPath.Combine(GetCurrentDir, sFileName);
     Self.ExecuteScript(Dir);
@@ -115,9 +120,10 @@ begin
 
 end;
 
-class function TMigration.New: TMigration;
+class function TMigration.New(aArgs:TArgs): TMigration;
 begin
   Result := TMigration.Create();
+  Result.FArgs := aArgs;
 
 end;
 
