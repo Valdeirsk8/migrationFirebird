@@ -37,6 +37,7 @@ This command initialize a new migration to your project
 
 ```
 migration init migration
+migration init migration -d "Description"
 ```
 
 ### > Migrate
